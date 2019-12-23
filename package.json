@@ -1,0 +1,44 @@
+{
+  "name": "ember-tracked-properties-codemod",
+  "description": "A codemod for transforming your ember app code to start using `@tracked` properties.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Suchita Doshi",
+    "email": "suchitadoshi1987@gmail.com",
+    "url": "https://github.com/suchitadoshi1987"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "codemod-cli test",
+    "update-docs": "codemod-cli update-docs"
+  },
+  "bin": "./bin/cli.js",
+  "keywords": [
+    "codemod-cli"
+  ],
+  "dependencies": {
+    "codemod-cli": "^0.2.7"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-decorators": "^7.7.4",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "prettier": "^1.15.2",
+    "jest": "^23.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suchitadoshi1987/ember-tracked-properties-codemod"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "engines": {
+    "node": "8.* || 10.* || >= 12.*"
+  }
+}
