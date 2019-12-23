@@ -3,8 +3,7 @@ import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 
 export default class Foo extends Component {
-  @tracked
-  foo = 'bar';
+  @tracked foo = 'bar';
   baz;
 
   get fooBar() {

@@ -89,4 +89,35 @@ function buildTrackedDecorator(name, value, j) {
   return node;
 }
 
-module.exports = { addTrackedImport, getDependentKeys, buildTrackedDecorator };
+/**
+ * Returns the formatted @tracked signature. After adding the @tracked decorator
+ * to the source, if the class property has a value associated with it,
+ * the @tracked decorator is add above the property instead of prefixing it inline.
+ * This function will check if the length of characters including the @tracked addition
+ * doesn't add up to more than 50 characters, then reformat it to be prefixed instead
+ * of being on a separate line.
+ * @param {string} trackedConvertedSource
+ */
+function reformatTrackedDecorators(trackedConvertedSource) {
+  const matchedTracked = trackedConvertedSource.match(/@tracked\n(.*)\n/g);
+  if (matchedTracked) {
+    matchedTracked.forEach(matchedData => {
+      const convertedMatchedData = matchedData.replace(
+        /@tracked\n\s+/,
+        '@tracked '
+      );
+      trackedConvertedSource = trackedConvertedSource.replace(
+        matchedData,
+        convertedMatchedData
+      );
+    });
+  }
+  return trackedConvertedSource;
+}
+
+module.exports = {
+  addTrackedImport,
+  getDependentKeys,
+  buildTrackedDecorator,
+  reformatTrackedDecorators,
+};

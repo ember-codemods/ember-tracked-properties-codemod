@@ -3,9 +3,16 @@ const {
   addTrackedImport,
   getDependentKeys,
   buildTrackedDecorator,
+  reformatTrackedDecorators,
 } = require('./utils/helper');
 
+const { getOptions } = require('codemod-cli');
+const DEFAULT_OPTIONS = {
+  alwaysPrefix: 'true',
+};
+
 module.exports = function transformer(file, api) {
+  const configOptions = Object.assign({}, DEFAULT_OPTIONS, getOptions());
   const classProps = [];
   let computedProps = [];
   let computedPropsMap = {};
@@ -51,7 +58,7 @@ module.exports = function transformer(file, api) {
   // with @tracked. Also, set the `shouldImportBeAdded` to true which would help
   // determine if the import statement `@glimmer/tracking` needs to be added to
   // the file.
-  const trackedConvertedSource = j(file.source)
+  let trackedConvertedSource = j(file.source)
     .find(j.ClassProperty)
     .forEach(path => {
       if (computedProps.includes(path.node.key.name)) {
@@ -66,6 +73,10 @@ module.exports = function transformer(file, api) {
       return path;
     })
     .toSource();
+
+  if (configOptions.alwaysPrefix === 'true') {
+    trackedConvertedSource = reformatTrackedDecorators(trackedConvertedSource);
+  }
 
   // Iterate on all the `computed` decorators and for each node, check if
   // all the arguments are a part of the `classProps` array, if so, then

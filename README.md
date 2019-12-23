@@ -20,7 +20,11 @@ A codemod for transforming your ember app code to start using `@tracked` propert
 npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.hbs
 ```
     
-    
+The codemod accepts the following options:
+
+|        Option         |  Value  |             Default             |                                                                     Details                                                                      |
+| --------------------- | ------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--always-prefix`      | boolean | `true`                          | Always prefix `@tracked` inline                                                                             |
 
 ## Contributing
 
