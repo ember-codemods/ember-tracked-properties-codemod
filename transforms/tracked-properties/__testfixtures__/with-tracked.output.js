@@ -4,8 +4,7 @@ import { computed, get } from '@ember/object';
 
 export default class Foo extends Component {
   @tracked bar;
-  @tracked
-  baz = 'barBaz';
+  @tracked baz = 'barBaz';
 
   get bazInfo() {
     return `Name: ${get(this, 'baz')}`;
