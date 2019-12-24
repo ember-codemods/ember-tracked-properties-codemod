@@ -3,7 +3,7 @@
 ## Usage
 
 ```
-npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.hbs
+npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.js
 ```
 
 ## Input / Output
