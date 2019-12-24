@@ -1,8 +1,8 @@
 # ember-tracked-properties-codemod
 
 [![Build Status](https://travis-ci.com/suchitadoshi1987/ember-tracked-properties-codemod.svg?branch=master)](https://travis-ci.com/suchitadoshi1987/ember-tracked-properties-codemod)
-[![npm](https://img.shields.io/npm/v/ember-tracked-properties-codemod.svg?label=npm)](https://www.npmjs.com/package/ember-tracked-properties-codemod)
 [![Coverage Status](https://coveralls.io/repos/github/ember-codemods/ember-tracked-properties-codemod/badge.svg?branch=master)](https://coveralls.io/github/ember-codemods/ember-tracked-properties-codemod?branch=master)
+[![npm](https://img.shields.io/npm/v/ember-tracked-properties-codemod.svg?label=npm)](https://www.npmjs.com/package/ember-tracked-properties-codemod)
 [![dependencies Status](https://david-dm.org/ember-codemods/ember-tracked-properties-codemod/status.svg)](https://david-dm.org/ember-codemods/ember-tracked-properties-codemod)
 [![devDependencies Status](https://david-dm.org/ember-codemods/ember-tracked-properties-codemod/dev-status.svg)](https://david-dm.org/ember-codemods/ember-tracked-properties-codemod?type=dev)
 
