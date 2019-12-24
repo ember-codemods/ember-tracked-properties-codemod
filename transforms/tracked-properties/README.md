@@ -9,14 +9,13 @@ npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.hbs
 ## Input / Output
 
 <!--FIXTURES_TOC_START-->
-
-- [basic](#basic)
-- [basic-with-prefix-false](#basic-with-prefix-false)
-- [chained-complex-computed](#chained-complex-computed)
-- [chained-computed](#chained-computed)
-- [complex](#complex)
-- [with-tracked](#with-tracked)
-  <!--FIXTURES_TOC_END-->
+* [basic-with-prefix-false](#basic-with-prefix-false)
+* [basic](#basic)
+* [chained-complex-computed](#chained-complex-computed)
+* [chained-computed](#chained-computed)
+* [complex](#complex)
+* [with-tracked](#with-tracked)
+<!--FIXTURES_TOC_END-->
 
 ## <!--FIXTURES_CONTENT_START-->
 
