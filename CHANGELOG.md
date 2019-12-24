@@ -1,4 +1,7 @@
-Must provide GITHUB_AUTH
+## v0.2.3 (2019-12-24)
+
+#### :memo: Documentatoin
+* Updated Readme and dependencies ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
 
 ## v0.2.2 (2019-12-24)
 
