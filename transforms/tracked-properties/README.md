@@ -9,12 +9,14 @@ npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.hbs
 ## Input / Output
 
 <!--FIXTURES_TOC_START-->
-* [basic](#basic)
-* [chained-complex-computed](#chained-complex-computed)
-* [chained-computed](#chained-computed)
-* [complex](#complex)
-* [with-tracked](#with-tracked)
-<!--FIXTURES_TOC_END-->
+
+- [basic](#basic)
+- [basic-with-prefix-false](#basic-with-prefix-false)
+- [chained-complex-computed](#chained-complex-computed)
+- [chained-computed](#chained-computed)
+- [complex](#complex)
+- [with-tracked](#with-tracked)
+  <!--FIXTURES_TOC_END-->
 
 ## <!--FIXTURES_CONTENT_START-->
 
@@ -38,6 +40,44 @@ export default class Foo extends Component {
 ```
 
 **Output** (<small>[basic.output.js](__testfixtures__/basic.output.js)</small>):
+
+```js
+import { tracked } from '@glimmer/tracking';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+
+export default class Foo extends Component {
+  bar;
+  @tracked baz = 'barBaz';
+
+  get bazInfo() {
+    return `Name: ${get(this, 'baz')}`;
+  }
+}
+```
+
+---
+
+<a id="basic-with-prefix-false">**basic-with-prefix-false ({alwaysPrefix: `false`})**</a>
+
+**Input** (<small>[basic-with-prefix-false.input.js](__testfixtures__/basic-with-prefix-false.input.js)</small>):
+
+```js
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+
+export default class Foo extends Component {
+  bar;
+  baz = 'barBaz';
+
+  @computed('baz')
+  get bazInfo() {
+    return `Name: ${get(this, 'baz')}`;
+  }
+}
+```
+
+**Output** (<small>[basic-with-prefix-false.output.js](__testfixtures__/basic-with-prefix-false.output.js)</small>):
 
 ```js
 import { tracked } from '@glimmer/tracking';
@@ -91,8 +131,7 @@ import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 
 export default class Foo extends Component {
-  @tracked
-  firstName = 'Foo';
+  @tracked firstName = 'Foo';
   @tracked lastName;
   @tracked phone;
   zipcode;
@@ -147,8 +186,7 @@ import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 
 export default class Foo extends Component {
-  @tracked
-  foo = 'bar';
+  @tracked foo = 'bar';
   baz;
 
   get fooBar() {
@@ -250,7 +288,6 @@ export default class Foo extends Component {
     return `Name: ${get(this, 'baz')}`;
   }
 }
-
 ```
 
 **Output** (<small>[with-tracked.output.js](__testfixtures__/with-tracked.output.js)</small>):
@@ -262,14 +299,12 @@ import { computed, get } from '@ember/object';
 
 export default class Foo extends Component {
   @tracked bar;
-  @tracked
-  baz = 'barBaz';
+  @tracked baz = 'barBaz';
 
   get bazInfo() {
     return `Name: ${get(this, 'baz')}`;
   }
 }
-
 ```
 
 ---
