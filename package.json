@@ -1,18 +1,7 @@
 {
   "name": "ember-tracked-properties-codemod",
-  "description": "A codemod for transforming your ember app code to start using `@tracked` properties.",
   "version": "0.2.0",
-  "author": {
-    "name": "Suchita Doshi",
-    "email": "suchitadoshi1987@gmail.com",
-    "url": "https://github.com/suchitadoshi1987"
-  },
-  "license": "MIT",
-  "scripts": {
-    "test": "codemod-cli test",
-    "update-docs": "codemod-cli update-docs"
-  },
-  "bin": "./bin/cli.js",
+  "description": "A codemod for transforming your ember app code to start using `@tracked` properties.",
   "keywords": [
     "codemod-cli",
     "codemods",
@@ -20,6 +9,24 @@
     "ember-codemod",
     "ember-tracked-properties"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suchitadoshi1987/ember-tracked-properties-codemod"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Suchita Doshi",
+    "email": "suchitadoshi1987@gmail.com",
+    "url": "https://github.com/suchitadoshi1987"
+  },
+  "bin": "./bin/cli.js",
+  "scripts": {
+    "test": "codemod-cli test",
+    "update-docs": "codemod-cli update-docs"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
     "codemod-cli": "^2.1.0"
   },
@@ -29,20 +36,31 @@
     "eslint": "^5.9.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
+    "jest": "^23.1.0",
     "prettier": "^1.15.2",
-    "jest": "^23.1.0"
+    "release-it": "^12.2.1",
+    "release-it-lerna-changelog": "^1.0.3"
   },
-  "jest": {
-    "testEnvironment": "node"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/suchitadoshi1987/ember-tracked-properties-codemod"
+  "engines": {
+    "node": "8.* || 10.* || >= 12.*"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "engines": {
-    "node": "8.* || 10.* || >= 12.*"
+  "release-it": {
+    "hooks": {
+      "after:bump": "yarn update-docs"
+    },
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md"
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true
+    }
   }
 }
