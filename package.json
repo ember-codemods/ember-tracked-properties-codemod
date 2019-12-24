@@ -1,6 +1,6 @@
 {
   "name": "ember-tracked-properties-codemod",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A codemod for transforming your ember app code to start using `@tracked` properties.",
   "keywords": [
     "codemod-cli",
