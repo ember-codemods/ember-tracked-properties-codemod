@@ -4,6 +4,7 @@
 
 [![npm](https://img.shields.io/npm/v/ember-tracked-properties-codemod.svg?label=npm)](https://www.npmjs.com/package/ember-tracked-properties-codemod)
 
+[![Coverage Status](https://coveralls.io/repos/github/ember-codemods/ember-tracked-properties-codemod/badge.svg?branch=master)](https://coveralls.io/github/ember-codemods/ember-tracked-properties-codemod?branch=master)
 
 A codemod for transforming your ember app code to start using `@tracked` properties.
 
@@ -17,7 +18,7 @@ A codemod for transforming your ember app code to start using `@tracked` propert
 ## Usage
 
 ```
-npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.hbs
+npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.js
 ```
     
 The codemod accepts the following options:

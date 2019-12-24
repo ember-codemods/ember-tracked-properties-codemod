@@ -21,11 +21,16 @@
   },
   "bin": "./bin/cli.js",
   "scripts": {
-    "test": "codemod-cli test",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "test": "codemod-cli test --coverage",
     "update-docs": "codemod-cli update-docs"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "transforms/tracked-properties/index.js",
+      "transforms/tracked-properties/utils/helper.js"
+    ]
   },
   "dependencies": {
     "codemod-cli": "^2.1.0"
@@ -33,6 +38,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-decorators": "^7.7.4",
+    "coveralls": "^3.0.9",
     "eslint": "^5.9.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
