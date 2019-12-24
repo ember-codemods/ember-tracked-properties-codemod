@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/suchitadoshi1987/ember-tracked-properties-codemod"
+    "url": "https://github.com/ember-codemods/ember-tracked-properties-codemod"
   },
   "license": "MIT",
   "author": {
