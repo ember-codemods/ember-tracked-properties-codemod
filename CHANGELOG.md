@@ -1,3 +1,11 @@
+## v0.2.4 (2019-12-25)
+
+#### :bug: Bug Fix
+* [#4](https://github.com/ember-codemods/ember-tracked-properties-codemod/pull/4) Handle correct transformation of `@tracked` property ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
+
+#### Committers: 1
+- Suchita Doshi ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
+
 ## v0.2.3 (2019-12-24)
 
 #### :memo: Documentatoin
