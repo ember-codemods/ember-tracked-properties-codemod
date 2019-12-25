@@ -25,29 +25,28 @@ module.exports = function transformer(file, api) {
       path.node.body.forEach(classItem => {
         // Collect all the class properties in the file and add it to the
         // classProps array.
-        if (classItem.type === 'ClassProperty') {
+        if (classItem.type === 'ClassProperty' && !classItem.decorators) {
           classProps.push(classItem.key.name);
         }
         // Collect all the dependent keys of the computed properties present in the file
         // and add it to the computedProps array.
-        if (classItem.type === 'ClassMethod') {
-          if (classItem.kind === 'get') {
-            classProps.push(classItem.key.name);
-          }
-          if (classItem.decorators) {
-            classItem.decorators.forEach(decoratorItem => {
-              if (
-                decoratorItem.expression.callee &&
-                decoratorItem.expression.callee.name === 'computed'
-              ) {
-                const argValues = decoratorItem.expression.arguments.map(
-                  item => item.value
-                );
-                computedPropsMap[classItem.key.name] = argValues;
-                computedProps = computedProps.concat(argValues);
-              }
-            });
-          }
+        if (
+          classItem.type === 'ClassMethod' &&
+          classItem.kind === 'get' &&
+          classItem.decorators
+        ) {
+          classItem.decorators.forEach(decoratorItem => {
+            if (
+              decoratorItem.expression.callee &&
+              decoratorItem.expression.callee.name === 'computed'
+            ) {
+              const argValues = decoratorItem.expression.arguments.map(
+                item => item.value
+              );
+              computedPropsMap[classItem.key.name] = argValues;
+              computedProps = computedProps.concat(argValues);
+            }
+          });
         }
       });
     });
@@ -61,14 +60,14 @@ module.exports = function transformer(file, api) {
   let trackedConvertedSource = j(file.source)
     .find(j.ClassProperty)
     .forEach(path => {
-      if (computedProps.includes(path.node.key.name)) {
+      if (!path.node.decorators && computedProps.includes(path.node.key.name)) {
         shouldImportBeAdded = true;
-        var decorated = buildTrackedDecorator(
-          path.node.key.name,
-          path.node.value,
-          j
-        );
-        path.replace(decorated);
+        const trackedDecorator = buildTrackedDecorator(path.node.key.name, j);
+        
+        // @TODO: Determine if @tracked can be prefixed alongside other decorators in a property,
+        // if yes, then change this code to push the trackedDecorator along with the
+        // others.
+        path.node.decorators = trackedDecorator;
       }
       return path;
     })
