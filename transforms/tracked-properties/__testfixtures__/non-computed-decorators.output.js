@@ -5,6 +5,7 @@ import { alias } from '@ember/object/computed';
 
 export default class Foo extends Component {
   bar;
+  // baz class property
   @tracked baz = 'barBaz';
 
   @alias('model.isFoo')
