@@ -9,13 +9,15 @@ npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.js
 ## Input / Output
 
 <!--FIXTURES_TOC_START-->
-* [basic-with-prefix-false](#basic-with-prefix-false)
-* [basic](#basic)
-* [chained-complex-computed](#chained-complex-computed)
-* [chained-computed](#chained-computed)
-* [complex](#complex)
-* [with-tracked](#with-tracked)
-<!--FIXTURES_TOC_END-->
+
+- [basic-with-prefix-false](#basic-with-prefix-false)
+- [basic](#basic)
+- [chained-complex-computed](#chained-complex-computed)
+- [chained-computed](#chained-computed)
+- [complex](#complex)
+- [non-computed-decorators](#non-computed-decorators)
+- [with-tracked](#with-tracked)
+  <!--FIXTURES_TOC_END-->
 
 ## <!--FIXTURES_CONTENT_START-->
 
@@ -263,6 +265,63 @@ export default class AddTeamComponent extends Component {
   @action
   addTeam() {
     this.team.addTeamName(this.teamName);
+  }
+}
+```
+
+---
+
+<a id="non-computed-decorators">**non-computed-decorators**</a>
+
+**Input** (<small>[non-computed-decorators.input.js](__testfixtures__/non-computed-decorators.input.js)</small>):
+
+```js
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
+
+export default class Foo extends Component {
+  bar;
+  baz = 'barBaz';
+
+  @alias('model.isFoo')
+  isFoo;
+
+  @computed('baz', 'isFoo')
+  get bazInfo() {
+    return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
+  }
+
+  @computed('bar', 'isFoo').readOnly()
+  get barInfo() {
+    return get(this, 'isFoo') ? `Name: ${get(this, 'bab')}` : 'Bar';
+  }
+}
+```
+
+**Output** (<small>[non-computed-decorators.output.js](__testfixtures__/non-computed-decorators.output.js)</small>):
+
+```js
+import { tracked } from '@glimmer/tracking';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
+
+export default class Foo extends Component {
+  bar;
+  @tracked baz = 'barBaz';
+
+  @alias('model.isFoo')
+  isFoo;
+
+  @computed('isFoo')
+  get bazInfo() {
+    return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
+  }
+
+  @computed('bar', 'isFoo').readOnly()
+  get barInfo() {
+    return get(this, 'isFoo') ? `Name: ${get(this, 'bab')}` : 'Bar';
   }
 }
 ```

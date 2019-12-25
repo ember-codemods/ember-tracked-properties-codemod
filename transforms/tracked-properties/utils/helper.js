@@ -59,13 +59,15 @@ function _doesContainNonLocalArgs(argItem, computedMap, classProperties) {
 
   while (stack.size() > 0) {
     currItem = stack.pop();
-    // If currItem is not a class property, return true.
-    if (!classProperties.includes(currItem)) {
+    const dependentKeys = computedMap[currItem];
+
+    // If currItem is not a class property and
+    // if it is not a computed property with dependent keys, return true.
+    if (!classProperties.includes(currItem) && !dependentKeys) {
       return true;
     }
     // If currItem itself is a computed property, then it would have dependent keys.
     // Get the dependent keys and push them in the stack.
-    const dependentKeys = computedMap[currItem];
     if (dependentKeys) {
       stack.push(...dependentKeys);
     }
@@ -78,15 +80,13 @@ function _doesContainNonLocalArgs(argItem, computedMap, classProperties) {
  * the key and values provided.
  * @param {*} macroName
  * @param {*} name
- * @param {*} value
  * @param {*} j
  */
-function buildTrackedDecorator(name, value, j) {
+function buildTrackedDecorator(name, j) {
   var node = j('class Fake { @tracked' + ' ' + name + '; \n}')
     .find(j.ClassProperty)
     .get().node;
-  node.value = value;
-  return node;
+  return node.decorators;
 }
 
 /**
