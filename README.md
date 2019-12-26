@@ -26,6 +26,11 @@ The codemod accepts the following options:
 |        Option         |  Value  |             Default             |                                                                     Details                                                                      |
 | --------------------- | ------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `--always-prefix`      | boolean | `true`                          | Always prefix `@tracked` inline                                                                             |
+## Transforms
+
+<!--TRANSFORMS_START-->
+* [ember-tracked-properties-codemod](transforms/tracked-properties/README.md)
+<!--TRANSFORMS_END-->
 
 ## Contributing
 
