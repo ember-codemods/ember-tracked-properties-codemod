@@ -1,3 +1,15 @@
+## v0.2.5 (2020-01-14)
+
+#### :bug: Bug Fix
+* [#14](https://github.com/ember-codemods/ember-tracked-properties-codemod/pull/14) Add support for readOnly computed property conversion ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
+
+#### :memo: Documentation
+* [#14](https://github.com/ember-codemods/ember-tracked-properties-codemod/pull/14) Add support for readOnly computed property conversion ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
+
+#### Committers: 2
+- Suchita Doshi ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v0.2.4 (2019-12-25)
 
 #### :bug: Bug Fix

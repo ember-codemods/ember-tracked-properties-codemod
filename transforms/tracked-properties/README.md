@@ -9,16 +9,15 @@ npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.js
 ## Input / Output
 
 <!--FIXTURES_TOC_START-->
-
-- [basic-with-prefix-false](#basic-with-prefix-false)
-- [basic](#basic)
-- [chained-complex-computed](#chained-complex-computed)
-- [chained-computed](#chained-computed)
-- [complex](#complex)
-- [non-computed-decorators](#non-computed-decorators)
-- [read-only-computed-decorators](#read-only-computed-decorators)
-- [with-tracked](#with-tracked)
-  <!--FIXTURES_TOC_END-->
+* [basic-with-prefix-false](#basic-with-prefix-false)
+* [basic](#basic)
+* [chained-complex-computed](#chained-complex-computed)
+* [chained-computed](#chained-computed)
+* [complex](#complex)
+* [non-computed-decorators](#non-computed-decorators)
+* [read-only-computed-decorators](#read-only-computed-decorators)
+* [with-tracked](#with-tracked)
+<!--FIXTURES_TOC_END-->
 
 ## <!--FIXTURES_CONTENT_START-->
 
