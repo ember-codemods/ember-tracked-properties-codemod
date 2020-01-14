@@ -29,7 +29,7 @@ The codemod accepts the following options:
 ## Transforms
 
 <!--TRANSFORMS_START-->
-* [ember-tracked-properties-codemod](transforms/tracked-properties/README.md)
+* [tracked-properties](transforms/tracked-properties/README.md)
 <!--TRANSFORMS_END-->
 
 ## Contributing
