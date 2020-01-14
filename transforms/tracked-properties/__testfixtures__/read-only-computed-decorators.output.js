@@ -11,13 +11,18 @@ export default class Foo extends Component {
   @alias('model.isFoo')
   isFoo;
 
-  @computed('isFoo')
-  get bazInfo() {
-    return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
+  get barBazInfo() {
+    return `Bar: ${get(this, 'bar')}, Baz: ${get(this, 'baz')}`;
   }
 
-  @computed('isFoo').readOnly()
+  @(computed('isFoo').readOnly())
   get barInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
+  }
+
+  // This should not remove the 'blah' decorator since its not a computed property.
+  @blah('bar')
+  get barData() {
+    return get(this, 'bar');
   }
 }

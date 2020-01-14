@@ -9,14 +9,16 @@ npx ember-tracked-properties-codemod path/of/files/ or/some**/*glob.js
 ## Input / Output
 
 <!--FIXTURES_TOC_START-->
-* [basic-with-prefix-false](#basic-with-prefix-false)
-* [basic](#basic)
-* [chained-complex-computed](#chained-complex-computed)
-* [chained-computed](#chained-computed)
-* [complex](#complex)
-* [non-computed-decorators](#non-computed-decorators)
-* [with-tracked](#with-tracked)
-<!--FIXTURES_TOC_END-->
+
+- [basic-with-prefix-false](#basic-with-prefix-false)
+- [basic](#basic)
+- [chained-complex-computed](#chained-complex-computed)
+- [chained-computed](#chained-computed)
+- [complex](#complex)
+- [non-computed-decorators](#non-computed-decorators)
+- [read-only-computed-decorators](#read-only-computed-decorators)
+- [with-tracked](#with-tracked)
+  <!--FIXTURES_TOC_END-->
 
 ## <!--FIXTURES_CONTENT_START-->
 
@@ -292,9 +294,9 @@ export default class Foo extends Component {
     return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
   }
 
-  @computed('bar', 'isFoo').readOnly()
+  @(computed('bar', 'isFoo').readOnly())
   get barInfo() {
-    return get(this, 'isFoo') ? `Name: ${get(this, 'bab')}` : 'Bar';
+    return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
   }
 }
 ```
@@ -308,7 +310,7 @@ import { computed, get } from '@ember/object';
 import { alias } from '@ember/object/computed';
 
 export default class Foo extends Component {
-  bar;
+  @tracked bar;
   // baz class property
   @tracked baz = 'barBaz';
 
@@ -320,9 +322,79 @@ export default class Foo extends Component {
     return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
   }
 
-  @computed('bar', 'isFoo').readOnly()
+  @(computed('isFoo').readOnly())
   get barInfo() {
-    return get(this, 'isFoo') ? `Name: ${get(this, 'bab')}` : 'Bar';
+    return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
+  }
+}
+```
+
+---
+
+<a id="read-only-computed-decorators">**read-only-computed-decorators**</a>
+
+**Input** (<small>[read-only-computed-decorators.input.js](__testfixtures__/read-only-computed-decorators.input.js)</small>):
+
+```js
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
+
+export default class Foo extends Component {
+  bar;
+  // baz class property
+  baz = 'barBaz';
+
+  @alias('model.isFoo')
+  isFoo;
+
+  @computed('baz', 'bar')
+  get barBazInfo() {
+    return `Bar: ${get(this, 'bar')}, Baz: ${get(this, 'baz')}`;
+  }
+
+  @(computed('bar', 'isFoo').readOnly())
+  get barInfo() {
+    return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
+  }
+
+  // This should not remove the 'blah' decorator since its not a computed property.
+  @blah('bar')
+  get barData() {
+    return get(this, 'bar');
+  }
+}
+```
+
+**Output** (<small>[read-only-computed-decorators.output.js](__testfixtures__/read-only-computed-decorators.output.js)</small>):
+
+```js
+import { tracked } from '@glimmer/tracking';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
+
+export default class Foo extends Component {
+  @tracked bar;
+  // baz class property
+  @tracked baz = 'barBaz';
+
+  @alias('model.isFoo')
+  isFoo;
+
+  get barBazInfo() {
+    return `Bar: ${get(this, 'bar')}, Baz: ${get(this, 'baz')}`;
+  }
+
+  @(computed('isFoo').readOnly())
+  get barInfo() {
+    return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
+  }
+
+  // This should not remove the 'blah' decorator since its not a computed property.
+  @blah('bar')
+  get barData() {
+    return get(this, 'bar');
   }
 }
 ```

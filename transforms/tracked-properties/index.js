@@ -11,6 +11,46 @@ const DEFAULT_OPTIONS = {
   alwaysPrefix: 'true',
 };
 
+/**
+ * Return true if the computed property is readOnly.
+ * @param {*} nodeItem
+ */
+function _isReadOnlyComputedProperty(nodeItem) {
+  return (
+    _isComputedProperty(nodeItem) &&
+    nodeItem.expression.callee.property &&
+    nodeItem.expression.callee.property.name === 'readOnly'
+  );
+}
+
+/**
+ * Return true if the nodeItem is a computed property. It could either
+ * be a regular or readOnly computed property.
+ * @param {*} nodeItem
+ */
+function _isComputedProperty(nodeItem) {
+  return (
+    nodeItem.expression.callee &&
+    (nodeItem.expression.callee.name === 'computed' ||
+      (nodeItem.expression.callee.object &&
+        nodeItem.expression.callee.object.callee.name === 'computed'))
+  );
+}
+
+/**
+ * If the nodeItem is a computed property, then return an array of argument values.
+ * @param {*} nodeItem
+ */
+function _getArgValues(nodeItem) {
+  if (_isComputedProperty(nodeItem)) {
+    const nodeArguments = _isReadOnlyComputedProperty(nodeItem)
+      ? nodeItem.expression.callee.object.arguments
+      : nodeItem.expression.arguments;
+
+    return nodeArguments.map(item => item.value);
+  }
+}
+
 module.exports = function transformer(file, api) {
   const configOptions = Object.assign({}, DEFAULT_OPTIONS, getOptions());
   const classProps = [];
@@ -24,8 +64,15 @@ module.exports = function transformer(file, api) {
     .forEach(path => {
       path.node.body.forEach(classItem => {
         // Collect all the class properties in the file and add it to the
-        // classProps array.
-        if (classItem.type === 'ClassProperty' && !classItem.decorators) {
+        // classProps array. If there is a decorator associated with a class
+        // property, then only add it to the array if it is a @tracked property.
+        if (
+          classItem.type === 'ClassProperty' &&
+          (!classItem.decorators ||
+            classItem.decorators.every(
+              item => item.expression.name === 'tracked'
+            ))
+        ) {
           classProps.push(classItem.key.name);
         }
         // Collect all the dependent keys of the computed properties present in the file
@@ -36,13 +83,8 @@ module.exports = function transformer(file, api) {
           classItem.decorators
         ) {
           classItem.decorators.forEach(decoratorItem => {
-            if (
-              decoratorItem.expression.callee &&
-              decoratorItem.expression.callee.name === 'computed'
-            ) {
-              const argValues = decoratorItem.expression.arguments.map(
-                item => item.value
-              );
+            const argValues = _getArgValues(decoratorItem);
+            if (argValues) {
               computedPropsMap[classItem.key.name] = argValues;
               computedProps = computedProps.concat(argValues);
             }
@@ -63,7 +105,7 @@ module.exports = function transformer(file, api) {
       if (!path.node.decorators && computedProps.includes(path.node.key.name)) {
         shouldImportBeAdded = true;
         const trackedDecorator = buildTrackedDecorator(path.node.key.name, j);
-        
+
         // @TODO: Determine if @tracked can be prefixed alongside other decorators in a property,
         // if yes, then change this code to push the trackedDecorator along with the
         // others.
@@ -86,20 +128,28 @@ module.exports = function transformer(file, api) {
     .filter(path => {
       return (
         path.node.expression.type === 'CallExpression' &&
-        path.node.expression.callee &&
-        path.node.expression.callee.name === 'computed'
+        _isComputedProperty(path.node)
       );
     })
     .forEach(path => {
+      const isReadOnlyProperty = _isReadOnlyComputedProperty(path.node);
+      const computedPropArguments = isReadOnlyProperty
+        ? path.node.expression.callee.object.arguments
+        : path.node.expression.arguments;
+
       const dependentKeys = getDependentKeys(
-        path.node.expression.arguments,
+        computedPropArguments,
         computedPropsMap,
         classProps
       );
       if (!dependentKeys.length) {
         path.replace();
       } else {
-        path.node.expression.arguments = dependentKeys;
+        if (isReadOnlyProperty) {
+          path.node.expression.callee.object.arguments = dependentKeys;
+        } else {
+          path.node.expression.arguments = dependentKeys;
+        }
       }
     });
 
