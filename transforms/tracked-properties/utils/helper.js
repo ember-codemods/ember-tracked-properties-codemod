@@ -63,7 +63,7 @@ function _doesContainNonLocalArgs(argItem, computedMap, classProperties) {
 
     // If currItem is not a class property and
     // if it is not a computed property with dependent keys, return true.
-    if ((!classProperties.includes(currItem) && !dependentKeys) || Object.keys(computedMap).includes(currItem)) {
+    if (!classProperties.includes(currItem) && !dependentKeys) {
       return true;
     }
     // If currItem itself is a computed property, then it would have dependent keys.
