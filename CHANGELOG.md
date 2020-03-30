@@ -1,3 +1,8 @@
+## v0.2.6 (2020-03-29)
+
+#### :bug: Bug Fix
+* [#42](https://github.com/ember-codemods/ember-tracked-properties-codemod/pull/42) Fix the removal of computed decorators ([@suchitadoshi1987](https://github.com/suchitadoshi1987))
+
 ## v0.2.5 (2020-01-14)
 
 #### :bug: Bug Fix
