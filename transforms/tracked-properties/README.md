@@ -141,7 +141,7 @@ export default class Foo extends Component {
     return `Name: ${get(this, 'firstName')} ${get(this, 'lastName')}`;
   }
 
-  @computed('areaCode')
+  @computed('areaCode', 'phone')
   get phoneNumber() {
     return `(${get(this, 'areaCode')}) ${get(this, 'phone')}`;
   }
@@ -190,15 +190,17 @@ export default class Foo extends Component {
   @tracked foo = 'bar';
   baz;
 
+  @computed('foo')
   get fooBar() {
     return `Foo: ${get(this, 'foo')}`;
   }
 
+  @computed('fooBar')
   get fooBarDetail() {
     return `Foo bar detail: ${get(this, 'fooBar')}`;
   }
 
-  @computed('bang')
+  @computed('fooBarDetail', 'bang')
   get fooBarDetailWithBaz() {
     return `(${get(this, 'fooBarDetail')}) ${get(this, 'baz')}`;
   }
@@ -252,7 +254,7 @@ export default class AddTeamComponent extends Component {
   @tracked teamName;
   @tracked noOfHackers;
 
-  @computed('fooBar')
+  @computed('fooBar', 'noOfHackers')
   get isMaxExceeded() {
     return this.noOfHackers > 10;
   }
@@ -316,12 +318,12 @@ export default class Foo extends Component {
   @alias('model.isFoo')
   isFoo;
 
-  @computed('isFoo')
+  @computed('baz', 'isFoo')
   get bazInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
   }
 
-  @(computed('isFoo').readOnly())
+  @computed('bar', 'isFoo').readOnly()
   get barInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
   }
@@ -385,7 +387,7 @@ export default class Foo extends Component {
     return `Bar: ${get(this, 'bar')}, Baz: ${get(this, 'baz')}`;
   }
 
-  @(computed('isFoo').readOnly())
+  @(computed('bar', 'isFoo').readOnly())
   get barInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
   }

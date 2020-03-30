@@ -8,7 +8,7 @@ export default class AddTeamComponent extends Component {
   @tracked teamName;
   @tracked noOfHackers;
 
-  @computed('fooBar')
+  @computed('fooBar', 'noOfHackers')
   get isMaxExceeded() {
     return this.noOfHackers > 10;
   }

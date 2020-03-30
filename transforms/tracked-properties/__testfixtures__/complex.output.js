@@ -12,7 +12,7 @@ export default class Foo extends Component {
     return `Name: ${get(this, 'firstName')} ${get(this, 'lastName')}`;
   }
 
-  @computed('areaCode')
+  @computed('areaCode', 'phone')
   get phoneNumber() {
     return `(${get(this, 'areaCode')}) ${get(this, 'phone')}`;
   }
