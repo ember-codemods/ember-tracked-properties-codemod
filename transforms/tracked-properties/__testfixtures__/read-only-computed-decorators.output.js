@@ -15,7 +15,7 @@ export default class Foo extends Component {
     return `Bar: ${get(this, 'bar')}, Baz: ${get(this, 'baz')}`;
   }
 
-  @(computed('isFoo').readOnly())
+  @(computed('bar', 'isFoo').readOnly())
   get barInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
   }

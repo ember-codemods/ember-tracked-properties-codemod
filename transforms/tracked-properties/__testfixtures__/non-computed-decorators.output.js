@@ -11,12 +11,12 @@ export default class Foo extends Component {
   @alias('model.isFoo')
   isFoo;
 
-  @computed('isFoo')
+  @computed('baz', 'isFoo')
   get bazInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'baz')}` : 'Baz';
   }
 
-  @computed('isFoo').readOnly()
+  @computed('bar', 'isFoo').readOnly()
   get barInfo() {
     return get(this, 'isFoo') ? `Name: ${get(this, 'bar')}` : 'Bar';
   }

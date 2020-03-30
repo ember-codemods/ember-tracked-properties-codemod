@@ -119,38 +119,49 @@ module.exports = function transformer(file, api) {
     trackedConvertedSource = reformatTrackedDecorators(trackedConvertedSource);
   }
 
-  // Iterate on all the `computed` decorators and for each node, check if
-  // all the arguments are a part of the `classProps` array, if so, then
-  // remove the `@computed` decorator, else remove the arguments that are
-  // defined locally in the class.
+  /**
+   * Iterate on all the class items, if the class item has decorators and it is not a dependent
+   * key of some other property, then go ahead and check if the `computed` decorator can be safely removed.
+   */
   const convertedResult = j(trackedConvertedSource)
-    .find(j.Decorator)
-    .filter(path => {
-      return (
-        path.node.expression.type === 'CallExpression' &&
-        _isComputedProperty(path.node)
-      );
-    })
+    .find(j.ClassBody)
     .forEach(path => {
-      const isReadOnlyProperty = _isReadOnlyComputedProperty(path.node);
-      const computedPropArguments = isReadOnlyProperty
-        ? path.node.expression.callee.object.arguments
-        : path.node.expression.arguments;
+      path.node.body.forEach(classItem => {
+        const propName = classItem.key.name;
+        // Check if the class item is not a dependent key of any other computed properties in the class
+        // and if the item has any decorators.
+        if (
+          !Object.keys(computedPropsMap).some(item =>
+            computedPropsMap[item].includes(propName)
+          ) &&
+          classItem.decorators
+        ) {
+          classItem.decorators.forEach((decoratorItem, i) => {
+            if (
+              decoratorItem.expression.type === 'CallExpression' &&
+              _isComputedProperty(decoratorItem)
+            ) {
+              const isReadOnlyProperty = _isReadOnlyComputedProperty(
+                decoratorItem
+              );
+              const computedPropArguments = isReadOnlyProperty
+                ? decoratorItem.expression.callee.object.arguments
+                : decoratorItem.expression.arguments;
 
-      const dependentKeys = getDependentKeys(
-        computedPropArguments,
-        computedPropsMap,
-        classProps
-      );
-      if (!dependentKeys.length) {
-        path.replace();
-      } else {
-        if (isReadOnlyProperty) {
-          path.node.expression.callee.object.arguments = dependentKeys;
-        } else {
-          path.node.expression.arguments = dependentKeys;
+              const dependentKeys = getDependentKeys(
+                computedPropArguments,
+                computedPropsMap,
+                classProps
+              );
+              // If all the arguments of the decorator are class properties, then remove the decorator completely
+              // from the item.
+              if (!dependentKeys.length) {
+                classItem.decorators.splice(i, 1);
+              }
+            }
+          });
         }
-      }
+      });
     });
 
   return shouldImportBeAdded
