@@ -29,6 +29,7 @@ The codemod accepts the following options:
 ## Transforms
 
 <!--TRANSFORMS_START-->
+* [replace-setters](transforms/replace-setters/README.md)
 * [tracked-properties](transforms/tracked-properties/README.md)
 <!--TRANSFORMS_END-->
 
