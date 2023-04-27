@@ -39,6 +39,18 @@ function _isComputedProperty(nodeItem) {
 }
 
 /**
+ * Returns true if the file is a Glimmer component.
+ * @param {*} j 
+ * @param {*} root 
+ */
+function _isGlimmerComponent(j, root) {
+  return root
+    .find(j.ImportDeclaration)
+    .filter((path) => path.node.source.value === '@glimmer/component')
+    .length === 1;
+}
+
+/**
  * If the nodeItem is a computed property, then return an array of argument values.
  * @param {*} nodeItem
  */
@@ -59,6 +71,7 @@ module.exports = function transformer(file, api) {
   let computedPropsMap = {};
   let shouldImportBeAdded = false;
   const j = getParser(api);
+  const isGlimmerComponent = _isGlimmerComponent(j, j(file.source));
 
   j(file.source)
     .find(j.ClassBody)
@@ -154,7 +167,12 @@ module.exports = function transformer(file, api) {
                 computedPropsMap,
                 classProps
               );
-              dependentKeys = filterGlimmerArgs(dependentKeys);
+
+              // When working in a Glimmer component, filter our args which are tracked by default
+              if (isGlimmerComponent) {
+                dependentKeys = filterGlimmerArgs(dependentKeys);
+              }
+
               // If all the arguments of the decorator are class properties, then remove the decorator completely
               // from the item.
               if (!dependentKeys.length) {
