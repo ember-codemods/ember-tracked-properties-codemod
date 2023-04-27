@@ -4,6 +4,7 @@ const {
   getDependentKeys,
   buildTrackedDecorator,
   reformatTrackedDecorators,
+  filterGlimmerArgs,
 } = require('./utils/helper');
 
 const { getOptions } = require('codemod-cli');
@@ -148,11 +149,12 @@ module.exports = function transformer(file, api) {
                 ? decoratorItem.expression.callee.object.arguments
                 : decoratorItem.expression.arguments;
 
-              const dependentKeys = getDependentKeys(
+              let dependentKeys = getDependentKeys(
                 computedPropArguments,
                 computedPropsMap,
                 classProps
               );
+              dependentKeys = filterGlimmerArgs(dependentKeys);
               // If all the arguments of the decorator are class properties, then remove the decorator completely
               // from the item.
               if (!dependentKeys.length) {

@@ -45,6 +45,14 @@ function getDependentKeys(computedArgs, computedPropsMap, classProperties) {
 }
 
 /**
+ * Return the array of arguments that are not simple, non-nested, Glimmer component arguments.
+ * @param {*} computedArgs
+ */
+function filterGlimmerArgs(computedArgs) {
+  return computedArgs.filter(argItem => !(argItem.value.startsWith('args.') && argItem.value.split('.').length === 2))
+}
+
+/**
  * Checks the chained dependency among the arguments to see if there is any
  * value that is not a local class property.
  * Returns true if there is any property that is not a local class property.
@@ -120,4 +128,5 @@ module.exports = {
   getDependentKeys,
   buildTrackedDecorator,
   reformatTrackedDecorators,
+  filterGlimmerArgs,
 };
