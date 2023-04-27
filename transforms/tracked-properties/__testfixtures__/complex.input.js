@@ -16,4 +16,9 @@ export default class Foo extends Component {
   get phoneNumber() {
     return `(${get(this, 'areaCode')}) ${get(this, 'phone')}`;
   }
+
+  @computed('args.foo')
+  get ignoreArgsInEmberComponent() {
+    return this.args.foo ?? 1;
+  }
 }
